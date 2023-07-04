@@ -1,11 +1,11 @@
 import { AppDataSource } from "../../data-source";
 import { Request, Response } from "express";
-import { ReserveExemplary } from "../entity/ReserveExemplary";
+import { Reserva } from "../../ReserveExemplary/entity/ReserveExemplary";
 import { Reserve } from "../../Reserve/entity/Reserve";
 import { Exemplary } from "../../Exemplary/entity/Exemplary";
 
 export const getReserveExemplary = async (request:Request, response:Response) => {
-    const reserve = AppDataSource.getRepository(ReserveExemplary).find(request.body)
+    const reserve = AppDataSource.getRepository(Reserva).find(request.body)
     if(reserve === null) {
         return response.status(404).json({ message: "Nenhuma reserva encontrada no pelo sistema."})
     }
@@ -25,19 +25,27 @@ export const saveReserveExemplary = async (request: Request, response: Response)
     const reserves = request.body
     const { reserve, exemplaries } = reserves;
 
-    // Create a new ReserveExemplary instance
-    const reserveExemplary = new ReserveExemplary();
-    reserveExemplary.reserve = reserve;
-    reserveExemplary.exemplaries = exemplaries;
-
     try {
+        // Find the exemplar by ID
+        const exemplary = await AppDataSource.getRepository(Exemplary).findOne(exemplaries);
+
+        if (!exemplary) {
+            return response.status(404).json({ message: "Exemplary not found." });
+        }
+
+        // Create a new ReserveExemplary instance
+        const reserveExemplary = new Reserva();
+        reserveExemplary.id = reserve;
+        reserveExemplary.exemplary = exemplary;
+
         // Save the ReserveExemplary instance
-        const savedReserveExemplary = await AppDataSource.getRepository(ReserveExemplary).save(reserveExemplary);
+        const savedReserveExemplary = await AppDataSource.getRepository(Reserva).save(reserveExemplary);
         return response.json(savedReserveExemplary);
     } catch (error) {
         return response.status(500).json({ message: "Failed to save the reserve with exemplaries." });
     }
 };
+
 
 export const deleteReserveExemplary = async (request: Request, response: Response) => {
     const {reserveId} = request.params

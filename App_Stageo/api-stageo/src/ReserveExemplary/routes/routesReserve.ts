@@ -7,7 +7,7 @@ const routes = Router()
 
 routes.get('/ReserveExemplary', getReserveExemplary)
 routes.post('/ReserveExemplary', saveReserveExemplary)
-routes.put('/ReserveExemplary/', updateReserveExemplary)
+routes.put('/ReserveExemplary', updateReserveExemplary)
 routes.delete('/ReserveExemplary/', deleteReserveExemplary)
 
 

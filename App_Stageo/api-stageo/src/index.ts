@@ -7,9 +7,9 @@ import { AppDataSource } from "./data-source"
 import * as swagguerUi from "swagger-ui-express"
 import * as swaggerDocument from "./swagger.json"
 import routesUser from "./User/routes/routesUser"
-import routesReserve from "./Reserve/routes/routesReserve"
+// import routesReserve from "./Reserve/routes/routesReserve"
 import routerExemplary from "./Exemplary/routes/routesExemplary"
-
+import routesReserve from "./ReserveExemplary/routes/routesReserve"
 
 const app = express()
 // const port = process.env.PORT || 3333

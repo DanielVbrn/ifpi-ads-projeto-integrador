@@ -107,7 +107,7 @@ const Equipments: React.FC = () => {
                   variant="primary"
                   onClick={() => redirectToExemplaryPage(equipment.equipmentId)}
                 >
-                  Exemplares
+                  Ver reservas
                 </Button>
               </td>
             </tr>

@@ -8,6 +8,7 @@ import "bootstrap/dist/css/bootstrap.min.css"
 function App() {
   return (
     <BrowserRouter>
+      
       <Header/>
       <Router/>
     </BrowserRouter>

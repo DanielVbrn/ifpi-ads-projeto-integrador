@@ -4,6 +4,8 @@ import * as dotenv from 'dotenv';
 import { User } from "./User/entity/User";
 import { Reserve } from "./Reserve/entity/Reserve";
 import { Exemplary } from "./Exemplary/entity/Exemplary";
+import { Reserva } from "./ReserveExemplary/entity/ReserveExemplary";
+
 dotenv.config();
 
 
@@ -21,7 +23,7 @@ export const AppDataSource = new DataSource({
     database: name_DB,
     synchronize: true,
     logging: false,
-    entities: [Equipments,Exemplary, User, Reserve],
+    entities: [Equipments,Exemplary, User, Reserva],
     migrations: [],
     subscribers: [],
 })

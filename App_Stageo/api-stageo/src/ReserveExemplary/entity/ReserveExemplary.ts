@@ -1,14 +1,15 @@
-import { PrimaryGeneratedColumn, Column, Entity, ManyToOne, OneToMany, JoinColumn } from "typeorm";
-import { User } from "../../User/entity/User";
-import { Exemplary } from "../../Exemplary/entity/Exemplary";
-import { Reserve } from "../../Reserve/entity/Reserve";
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from "typeorm";
+import {Exemplary} from "../../Exemplary/entity/Exemplary";
 
 @Entity()
-export class ReserveExemplary {
-  @ManyToOne(() => Reserve, { nullable: false })
-  @JoinColumn({ name: "reserveId" })
-  reserve: Reserve;
+export class Reserva {
+  @PrimaryGeneratedColumn()
+  id: number;
 
-  @OneToMany(() => Exemplary, exemplary => exemplary.tombo, { nullable: false })
-  exemplaries: Exemplary[];
+  @Column()
+  data_devolucao: Date;
+
+  @ManyToOne(() => Exemplary, (exemplary) => exemplary.reservas)
+  exemplary: Exemplary;
 }
+

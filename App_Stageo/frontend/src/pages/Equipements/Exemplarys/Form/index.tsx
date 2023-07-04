@@ -1,13 +1,14 @@
 import React, { ChangeEvent, useEffect, useState } from "react";
-import { Button, Badge } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import Form from 'react-bootstrap/Form';
 import { useParams, useNavigate } from "react-router-dom";
 import api from "../../../../services/api";
 import "./index.css";
+import Equipments from "../../Equipments";
 
 interface IExemplary {
-  nome: string;
-  description: string;
+  tombo: number;
+  equipmentId: number;
   status: boolean;
 }
 
@@ -16,9 +17,9 @@ const Exemplary: React.FC = () => {
   const { tombo } = useParams(); // Obtém o ID da URL
 
   const [model, setModel] = useState<IExemplary>({
-    nome: "",
-    description: "",
-    status: true,
+    tombo: 0,
+    equipmentId: 0,
+    status: true
   });
 
   useEffect(() => {
@@ -39,11 +40,13 @@ const Exemplary: React.FC = () => {
   }
 
   function updateModel(e: ChangeEvent<HTMLInputElement>) {
-    setModel({
-      ...model,
-      [e.target.name]: e.target.type === "checkbox" ? e.target.checked : e.target.value,
-      
-    });
+    const value = e.target.type === "checkbox" ? e.target.checked : e.target.value;
+    const name = e.target.name;
+
+    setModel(prevModel => ({
+      ...prevModel,
+      [name]: value
+    }));
   }
 
   async function onSubmit(e: ChangeEvent<HTMLFormElement>) {
@@ -51,16 +54,14 @@ const Exemplary: React.FC = () => {
 
     try {
       if (tombo) {
-        // Atualiza o equipamento existente
         const response = await api.put(`/Exemplary/${tombo}`, model);
         console.log(response);
       } else {
-        // Adiciona um novo equipamento
-        const response = await api.post("/Exemplary", model);
+        const response = await api.post(`/Exemplary`, model);
         console.log(response);
       }
 
-      history("/Exemplary"); // Redireciona para a página de lista de equipamentos
+      history("/Exemplary/"); // Redireciona para a página de lista de equipamentos
     } catch (error) {
       console.error("Failed to save exemplary", error);
     }
@@ -82,17 +83,6 @@ const Exemplary: React.FC = () => {
       <br />
       <div className="container">
         <Form onSubmit={onSubmit}>
-          <Form.Group className="mb-3">
-            <Form.Label>Nome</Form.Label>
-            <Form.Control
-              type="text"
-              name="nome"
-              value={model.nome}
-              onChange={updateModel}
-            />
-          </Form.Group>
-
-
           <Form.Group className="mb-3" controlId="formBasicCheckbox">
             <h3>Status</h3>
             <Form.Check

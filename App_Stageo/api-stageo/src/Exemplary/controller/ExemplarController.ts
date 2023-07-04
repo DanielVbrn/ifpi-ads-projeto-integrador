@@ -2,7 +2,7 @@ import { AppDataSource } from "../../data-source";
 import { Exemplary } from "../entity/Exemplary";
 import { Request, Response } from "express";
 import { Equipments } from "../../Equipments/entity/Equipments";
-
+import { FindManyOptions } from "typeorm";
 
 
 
@@ -24,6 +24,16 @@ export const getExemplaryByTombo = async (request:Request, response:Response) =>
     }
     return response.json(exemplary)
 }
+
+
+// ...
+
+
+
+
+  
+  
+
 
 export const getExemplaryByName = async (request:Request, response:Response) => {
     const {nome}  = request.params

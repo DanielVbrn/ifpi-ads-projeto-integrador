@@ -1,6 +1,12 @@
 import { AppDataSource } from "../../data-source";
 import { User } from "../entity/User";
 import { Request, Response } from "express";
+import jwt from "jsonwebtoken";
+import bcrypt from "bcryptjs";
+
+const secretKey = "patopato";
+
+
 
 export const getUser = async (request:Request, response:Response) => {
     const user = await AppDataSource.getRepository(User).find(request.body)

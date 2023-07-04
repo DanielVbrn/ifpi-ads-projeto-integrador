@@ -1,43 +1,37 @@
 import React, { useEffect, useState } from "react";
 import Table from "react-bootstrap/Table";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import api from "../../../services/api";
-import { Badge, Button } from "react-bootstrap";
-import "../Exemplarys/Exemplary.css"
-
+import { Badge, Button, Form } from "react-bootstrap";
+import "./Exemplary.css";
 
 interface IExemplary {
   tombo: number;
   nome: string;
-  equipmentId:number;
+  equipmentId: number;
   status: boolean;
 }
 
 const Exemplary: React.FC = () => {
   const [exemplary, setExemplary] = useState<IExemplary[]>([]);
+  const [selectedExemplaries, setSelectedExemplaries] = useState<number[]>([]);
+  const [devolutionDate, setDevolutionDate] = useState<string>(""); // Adicionado estado para a data de devolução
   const history = useNavigate();
 
-  const location = useLocation();
-  const equipmentId = location.state && location.state.equipmentId;
-  
   useEffect(() => {
-    if (equipmentId) {
-      loadExemplarys();
-    }
-  }, [equipmentId]);
-  
+    loadExemplarys();
+  }, []);
 
   async function loadExemplarys() {
     try {
-      const response = await api.get(`/Exemplary?equipmentId=${equipmentId}`);
-      console.log(response);
+      const response = await api.get("/Exemplary");
       setExemplary(response.data);
     } catch (error) {
-      console.error("Failed to fetch exemplary", error);
+      console.error("Failed to fetch exemplarys", error);
     }
   }
 
-  function addEexemplary() {
+  function addExemplary() {
     history("/Cadastrar_exemplary", { replace: false });
   }
 
@@ -45,43 +39,60 @@ const Exemplary: React.FC = () => {
     history(`/Cadastrar_exemplary/${tombo}`, { replace: false });
   }
 
+  async function reserveExemplary(tombo: number) {
+    const updatedExemplaryList = exemplary.map((exemplary) =>
+      exemplary.tombo === tombo ? { ...exemplary, status: !exemplary.status } : exemplary
+    );
 
-  async function reserveExemplay(tombo: number) {
+    setExemplary(updatedExemplaryList);
+
+    setSelectedExemplaries((prevSelectedExemplaries) =>
+      prevSelectedExemplaries.includes(tombo)
+        ? prevSelectedExemplaries.filter((exemplaryTombo) => exemplaryTombo !== tombo)
+        : [...prevSelectedExemplaries, tombo]
+    );
+  }
+
+  async function confirmReservations() {
     try {
-      await api.post(`/Exemplary/${tombo}/reserve`);
-      console.log(`Exemplary ${tombo} reserved successfully.`);
-      // Atualize o estado ou recarregue os equipamentos após a reserva.
-      loadExemplarys();
+      const selectedExemplaryIds = selectedExemplaries
+        .map((tombo) => exemplary.find((exemplary) => exemplary.tombo === tombo)?.equipmentId)
+        .filter(Boolean);
+
+      await api.post("/ReserveExemplary", { exemplaries: selectedExemplaryIds, devolutionDate });
+      console.log("Reservations confirmed successfully.");
+
+      setSelectedExemplaries([]); // Limpar os exemplares selecionados após a confirmação
+      setDevolutionDate(""); // Limpar a data de devolução após a confirmação
+      loadExemplarys(); // Recarregar os exemplares atualizados
     } catch (error) {
-      console.error(`Failed to reserve exemplary ${tombo}`, error);
+      console.error("Failed to confirm reservations", error);
     }
   }
 
-  function back() {
-    history("/Equipments");
-  }
-
-  async function deleteExemplary(tombo: number) {
-    try {
-      await api.delete(`/Exemplary/${tombo}`);
-      loadExemplarys();
-    } catch (error) {
-      console.error("Failed to delete exemplary", error);
-    }
+  function deleteExemplary(tombo: number) {
+    api.delete(`/Exemplary/${tombo}`)
+      .then(() => {
+        console.log(`Exemplary ${tombo} deleted successfully.`);
+        loadExemplarys();
+      })
+      .catch((error) => {
+        console.error(`Failed to delete exemplary ${tombo}`, error);
+      });
   }
 
   return (
     <div className="container">
       <br />
       <h1>Reservas deste Equipamento</h1>
+      <br />
       <div className="exemplary-header">
-        <Button  variant="dark" size="sm" onClick={addEexemplary}>
+        <Button variant="dark" size="sm" onClick={addExemplary}>
           Cadastrar Reserva
         </Button>
-        <Button variant="dark" onClick={back} size="sm">
+        <Button variant="dark" size="sm" onClick={() => history("/Equipments")}>
           Voltar
         </Button>
-        
       </div>
       <br />
       <Table striped bordered hover className="text-center">
@@ -89,38 +100,24 @@ const Exemplary: React.FC = () => {
           <tr>
             <th>Tombo</th>
             <th>Status</th>
-            {/* <th>Data de criação</th> */}
             <th>Ações</th>
+            <th>Reservar</th>
           </tr>
         </thead>
         <tbody>
           {exemplary.map((exemplary) => (
             <tr key={exemplary.tombo}>
               <td>{exemplary.tombo}</td>
-              {/* <td>{exemplary.description}</td> */}
               <td>
-                <Badge bg={exemplary?.status ? "success" : "warning"}>
-                  {exemplary?.status ? "Disponível" : "Indisponível"}
+                <Badge bg={exemplary.status ? "success" : "warning"}>
+                  {exemplary.status ? "Disponível" : "Indisponível"}
                 </Badge>
               </td>
-              {/* <td>{formateDate(equipment.create_at)}</td>  */}
               <td>
-                <div
-                  className="btn-group"
-                  role="group"
-                  aria-label="Exemplo de botões separados"
-                >
+                <div className="btn-group" role="group" aria-label="Exemplo de botões separados">
                   <Button size="sm" onClick={() => updateExemplary(exemplary.tombo)}>
                     Editar
                   </Button>{" "}
-                  <Button
-                    size="sm"
-                    variant="success"
-                    onClick={() => reserveExemplay(exemplary.tombo)}
-                  >
-                    Reservar
-                  </Button>{" "}
-                  
                   <Button
                     size="sm"
                     variant="danger"
@@ -130,10 +127,38 @@ const Exemplary: React.FC = () => {
                   </Button>{" "}
                 </div>
               </td>
+              <td>
+                <Button
+                  size="sm"
+                  variant={selectedExemplaries.includes(exemplary.tombo) ? "info" : "success"}
+                  onClick={() => reserveExemplary(exemplary.tombo)}
+                  disabled={!exemplary.status}
+                >
+                  {selectedExemplaries.includes(exemplary.tombo) ? "Selecionado" : "Reservar"}
+                </Button>{" "}
+              </td>
             </tr>
           ))}
         </tbody>
       </Table>
+
+      <Form.Group controlId="devolutionDate">
+        <Form.Label>Data de Devolução:</Form.Label>
+        <Form.Control
+          type="date"
+          value={devolutionDate}
+          onChange={(e) => setDevolutionDate(e.target.value)}
+        />
+      </Form.Group>
+      <br />
+      <Button
+        className="bt-confirm"
+        variant="primary"
+        disabled={selectedExemplaries.length === 0 || !devolutionDate}
+        onClick={confirmReservations}
+      >
+        Confirmar Reservas
+      </Button>
     </div>
   );
 };
