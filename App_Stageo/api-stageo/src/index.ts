@@ -6,7 +6,7 @@ import routesEquipment from "./Equipments/routes/routesEquipments"
 import { AppDataSource } from "./data-source"
 import * as swagguerUi from "swagger-ui-express"
 import * as swaggerDocument from "./swagger.json"
-import routesUser from "./User/routes/routesUser"
+// import routesUser from "./User/routes/routesUser"
 // import routesReserve from "./Reserve/routes/routesReserve"
 import routerExemplary from "./Exemplary/routes/routesExemplary"
 import routesReserve from "./ReserveExemplary/routes/routesReserve"
@@ -32,6 +32,6 @@ app.use(cors(corsOptions));
 app.use(bodyParser.json())
 app.use(routesReserve)
 app.use(routesEquipment)
-app.use(routesUser)
+// app.use(routesUser)
 app.use(routerExemplary)
 app.listen(3333)
