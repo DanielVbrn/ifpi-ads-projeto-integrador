@@ -11,8 +11,8 @@ routes.get("/", (request:Request, response:Response) => {
 
 routes.post("/session", login)
 
-routes.use(auth)
 
+routes.use(auth)
 routes.get("/users", getUser)
 routes.post("/users", saveUser)
 

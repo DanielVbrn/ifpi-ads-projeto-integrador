@@ -3,7 +3,7 @@ import "reflect-metadata"
 import * as express from "express"
 import { AppDataSource } from "./data-source"
 import  routes from "./routes"
-
+import * as cors from "cors"
 
 const app = express()
 
@@ -16,6 +16,12 @@ AppDataSource.initialize().then(() => {
     console.error("Error during Data Source initialization", err)
 })
 
+const corsOptions = {
+    origin: "http://localhost:3000", // Substitua pela origem do seu frontend
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+};
+app.use(cors(corsOptions));
 app.use(express.json())
 app.use(routes)
 app.listen(3330)

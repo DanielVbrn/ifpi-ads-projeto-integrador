@@ -16,8 +16,7 @@ export const auth = async (request: Request, response: Response, next: NextFunct
         next()
         
     } catch (error) {
-        
-        return response.status(401).json({ message: "Token invalid"})
+        return response.status(401).json({ message: "Token invalid!"})
     }
 
 }
