@@ -25,9 +25,11 @@ const Header: React.FC = () => {
           )}
         </Nav>
         <Nav>
-          <Nav.Link as={Link} className="bt-logout" to="/session">
-            Logout
-          </Nav.Link>
+          <Nav.Item>
+            <Nav.Link as={Link} className="bt-logout" to="/session">
+              Logout
+            </Nav.Link>
+          </Nav.Item>
         </Nav>
       </Navbar.Collapse>
     </Navbar>
