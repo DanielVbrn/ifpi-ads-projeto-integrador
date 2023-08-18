@@ -1,7 +1,6 @@
 import { DataSource } from "typeorm"
 import { Equipments } from "./Equipments/entity/Equipments"
 import * as dotenv from 'dotenv';
-import { User } from "./User/entity/User";
 import { Reserve } from "./Reserve/entity/Reserve";
 import { Exemplary } from "./Exemplary/entity/Exemplary";
 import { Reserva } from "./ReserveExemplary/entity/ReserveExemplary";
@@ -23,7 +22,7 @@ export const AppDataSource = new DataSource({
     database: name_DB,
     synchronize: true,
     logging: false,
-    entities: [Equipments,Exemplary, User, Reserva],
+    entities: [Equipments,Exemplary, Reserva],
     migrations: [],
     subscribers: [],
 })

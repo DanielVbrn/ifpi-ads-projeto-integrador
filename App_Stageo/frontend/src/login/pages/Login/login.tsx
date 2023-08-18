@@ -36,7 +36,6 @@ const Login: React.FC = () => {
 
   return (
     <div className="main-login">
-      {/* ... código do seu componente Login ... */}
 
       <div className="right-login">
         <div className="card-login">
