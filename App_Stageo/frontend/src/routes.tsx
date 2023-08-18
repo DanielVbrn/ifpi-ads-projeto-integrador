@@ -10,7 +10,7 @@ import ExemplaryForm from "./pages/Equipements/Exemplarys/Form"
 import Login from "./login/pages/Login/login"
 
 
-const Router: React.FC = () => {
+export const Router: React.FC = () => {
     return (
         <Routes>
             <Route path="/session" element={<Login />} />

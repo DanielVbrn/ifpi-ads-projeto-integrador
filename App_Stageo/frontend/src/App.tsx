@@ -4,6 +4,9 @@ import Router from "./routes";
 import Header from "./components/index";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { AuthProvider } from "./login/AuthContext";
+import Login from "./login/pages/Login/login";
+
+
 
 function App() {
   const isLoggedIn = false; // Altere isso com base no estado de autenticação do usuário
@@ -11,8 +14,10 @@ function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
-        <Header />
+
+        <Route path="/session" element={<Login />} />
         <Routes>
+          <Header />
           {isLoggedIn ? (
             <Route path="/" element={<Router />} />
           ) : (
