@@ -6,12 +6,12 @@ export class User {
     @PrimaryGeneratedColumn()
     id: number
 
-    @Column({nullable:false})
+    @Column()
     name: string
 
     @Column({nullable:false})
     email: string
-
+    
     @Column({nullable:false})
     password: string
 

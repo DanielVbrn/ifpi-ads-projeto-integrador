@@ -3,25 +3,33 @@
 body {
     margin: 0;
     font-family: 'Noto Sans', sans-serif;
+    background-color: #f0f0f0; /* Cor de fundo para o corpo */
 }
 
+/* Estilize o link de login */
 .btn-login a {
-	text-decoration: none;
-    color: black;
+    text-decoration: none;
+    color: #00ff88; /* Cor do link de login */
+    font-weight: bold;
+    transition: color 0.3s ease-in-out; /* Efeito de transição suave para a cor */
 }
-  
-.main-login {
-	height: calc(100vh - 56px);
-    background: #201b2c;
 
+.btn-login a:hover {
+    color: #2b134b; /* Cor ao passar o mouse */
+}
+
+/* Estilize o contêiner principal */
+.main-login {
+    height: calc(100vh - 56px);
+    background: #201b2c;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
+/* Estilize a seção esquerda com a imagem */
 .left-login {
     width: 50vw;
-
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -30,14 +38,17 @@ body {
 
 .left-login > h1 {
     color: #77ffc0;
-
     font-size: 3vw;
 }
 
 .left-login-image {
-    width: 35vw;
+    width: 60%; /* Ajuste a largura da imagem conforme necessário */
+    max-width: 350px; /* Defina uma largura máxima para a imagem */
+    border-radius: 10px; /* Adicione um leve arredondamento à imagem */
+    box-shadow: 0px 10px 40px #00000056;
 }
 
+/* Estilize a seção direita do formulário de login */
 .right-login {
     width: 50vw;
     display: flex;
@@ -45,102 +56,85 @@ body {
     align-items: center;
 }
 
+/* Estilize o cartão de login */
 .card-login {
-    width: 60%;
-
+    width: 80%; /* Ajuste a largura do cartão conforme necessário */
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-
-    padding: 30px 35px;
-
+    padding: 30px;
     background: #2f2841;
     border-radius: 20px;
-    box-shadow: 0px 10px 40px #00000056;
+    box-shadow: 0px 10px 40px rgba(0, 0, 0, 0.56);
 }
 
 .card-login > h1 {
     color: #00ff88;
-
-    font-weight: 800;
-
-    margin: 0;
+    font-weight: bold;
+    font-size: 24px; /* Tamanho da fonte do título */
+    margin-bottom: 20px; /* Espaçamento inferior para o título */
 }
 
+/* Estilize os campos de entrada */
 .textfield {
     width: 100%;
-
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
-
     margin: 10px 0;
 }
 
 .textfield > input {
     width: 100%;
-
     border: none;
     border-radius: 10px;
     padding: 15px;
-
     background: #514869;
     color: #f0ffffde;
-    font-size: 12pt;
-    box-shadow: 0px 10px 40px #00000056;
-
-    /*não cria caixa branca ao redor*/
+    font-size: 14px; /* Aumente o tamanho da fonte para melhor legibilidade */
+    box-shadow: 0px 10px 40px rgba(0, 0, 0, 0.56);
     outline: none;
-
-    /*filha não ultrapassa a pai*/
     box-sizing: border-box;
 }
 
-.textfield > input::placeholder{
+.textfield > input::placeholder {
     color: #f0ffff94;
 }
 
 .textfield > label {
     color: #f0ffffde;
-    margin-bottom: 10px;
+    margin-bottom: 5px; /* Reduza o espaçamento inferior para as etiquetas */
 }
 
-.btn-login{
+/* Estilize o botão de login */
+.btn-login {
     width: 100%;
-
     padding: 16px 0;
-    margin: 25px;
-
+    margin: 25px 0;
     border: none;
     border-radius: 8px;
-
     outline: none;
     cursor: pointer;
-
     text-transform: uppercase;
-    font-weight: 800;
+    font-weight: bold;
     letter-spacing: 3px;
-
-    color: #2b134b;
+    color: white;
     background: #00ff88;
-    box-shadow: 0 10px 40px -12px #00ff8052;
+    transition: background 0.3s ease-in-out; /* Efeito de transição suave para o fundo */
 }
 
-@media only screen and (max-width: 950px){
+.btn-login:hover {
+    background: #2b134b; /* Cor de destaque ao passar o mouse */
+}
+
+@media only screen and (max-width: 950px) {
     .card-login {
         width: 85%;
     }
 }
 
-@media only screen and (max-width: 600px){
+@media only screen and (max-width: 600px) {
     .main-login {
         flex-direction: column;
-    }
-
-    .left-login > h1 {
-        display: none;
+        padding: 20px; /* Adicione um espaçamento interno na visualização móvel */
     }
 
     .left-login {
@@ -148,16 +142,18 @@ body {
         height: auto;
     }
 
+    .left-login-image {
+        width: 80%;
+        max-width: 300px; /* Ajuste a largura máxima da imagem móvel */
+    }
+
     .right-login {
         width: 100%;
         height: auto;
     }
 
-    .left-login-image {
-        width: 50vw;
-    }
-
     .card-login {
-        width: 90;
+        width: 90%;
+        margin-top: 20px; /* Espaçamento superior adicional na visualização móvel */
     }
 }
